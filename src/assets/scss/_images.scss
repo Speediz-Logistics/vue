@@ -1,0 +1,16 @@
+.#{$prefix}-image {
+  display: block;
+  align-self: center;
+  opacity: 1;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+
+
+  &-logo {
+    width: 303px;
+    height: 95px;
+    background-repeat: no-repeat;
+    background-image: url("@/assets/images/speediz-logo.png");
+  }
+}
