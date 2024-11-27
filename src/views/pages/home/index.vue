@@ -1,5 +1,5 @@
 <script setup>
-import { useProductStore } from '@/store/index.js';
+import {useProductStore} from "@/store/index.js";
 
 const { all: allProduct, data } = useProductStore();
 
@@ -13,31 +13,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <ul>
-      <li v-for="(product, index) in data" :key="index">
-        <p><strong>Name:</strong> {{ product.name }}</p>
-        <p><strong>Description:</strong> {{ product.description }}</p>
-        <p><strong>Category:</strong> {{ product.category }}</p>
-        <p><strong>Price:</strong> {{ product.price }}</p>
-      </li>
-    </ul>
+  <div class="d-flex flex-column">
+    <div>a</div>
+    <div>b</div>
+
+    <i class="speediz-image speediz-image-box" />
+
+    <el-button type="primary">Primary</el-button>
   </div>
 </template>
 
 <style scoped lang="scss">
-ul {
-  list-style: none;
-  padding: 0;
+.title {
+  background-color: gray;
 }
 
-li {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-p {
-  margin: 5px 0;
+.title-hello {
+  color: red;
 }
 </style>
