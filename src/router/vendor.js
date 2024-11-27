@@ -6,8 +6,8 @@ export default [
     children: [
       {
         path: '',
-        name: 'tokyu.top',
-        component: () => import('@views/tokyu/Index.vue'),
+        name: 'vendor.index',
+        component: () => import('@views/VendorView.vue'),
       },
     ],
   },

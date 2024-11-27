@@ -29,7 +29,7 @@ onMounted(() => {
 });
 
 const handleSplashFinish = () => {
-  setCookie('splashScreenShown', 'true', {expires: '7d', path: '/'});
+  setCookie('splashScreenShown', 'true', { expires: '7d', path: '/' });
   showSplashScreen.value = false;
 };
 </script>
