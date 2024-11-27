@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import guards from './guards';
+import vendorRoutes from './vendor'; // Import the routes from vendor.js
 
 const routes = [
   {
@@ -7,11 +8,8 @@ const routes = [
     name: 'default',
     component: () => import('../views/HomeView.vue'),
   },
-  {
-    path: '/vendor',
-    name: 'vendor',
-    component: () => import('@views/VendorView.vue'),
-  },
+  // Spread vendorRoutes here to integrate them
+  ...vendorRoutes,
 ];
 
 const router = createRouter({

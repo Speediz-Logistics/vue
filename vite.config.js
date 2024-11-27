@@ -32,7 +32,7 @@ export default ({ mode }) => {
           }),
         ],
         eslintrc: {
-          enabled: true,
+          enabled: false,
         },
         dts: true,
       }),
