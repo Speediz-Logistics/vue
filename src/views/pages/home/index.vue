@@ -26,6 +26,8 @@ onMounted(() => {
       <el-button class="button" round>Login</el-button>
       <el-button class="button" round>Sign Up</el-button>
 
+      <el-button class="button" round>Logout</el-button>
+
     </div>
 
   </div>
