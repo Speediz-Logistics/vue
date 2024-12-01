@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import {useProductStore} from "@/store/index.js";
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -56,6 +56,7 @@ const navigateTo = (page) => {
     left: 100px;
     top: 300px;
     color: white;
+    width: 500px;
   }
   .content h1{
     display: block;
@@ -75,6 +76,8 @@ const navigateTo = (page) => {
     z-index: 4;
     left: 100px;
     top: 250px;
+    width: 500px;
+
     .button{
       background-color: $primary-color;
       border: none;

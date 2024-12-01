@@ -9,11 +9,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import useCookies from '@composables/useCookie.js';
+import useCookies from '@/composables/useCookie.js';
 import SplashScreen from '@/views/pages/vendor/screens/SplashScreen.vue';
-import OnBoardScreen from '@/views/pages/vendor/screens/OnBoardScreen.vue';
-import registerScreen from '@/views/pages/vendor/screens/registerScreen.vue';
-import LoginScreen from "@/views/pages/vendor/screens/LoginScreen.vue";
 const { getCookie, setCookie } = useCookies();
 const showSplashScreen = ref(true);
 
