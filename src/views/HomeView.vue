@@ -4,8 +4,8 @@ import HomeIndex from '@/views/pages/home/index.vue';
 
 // Set meta tags for SEO
 useMetaTag({
-  title: 'Coming Soon',
-  name: 'ITE | Coming Soon',
+  title: 'Speediz',
+  name: 'Speediz | Coming Soon',
   description: 'Coming Soon.',
   url: 'https://ite-alumni-dev.decapsoul.one/',
   image: 'https://mekmunsopheaktra.com/assets/images/logo.png',
@@ -25,3 +25,7 @@ const prefixClass = {
     <HomeIndex />
   </div>
 </template>
+
+<style scoped lang="scss">
+@import '@/assets/scss/layouts/home';
+</style>

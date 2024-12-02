@@ -1,5 +1,7 @@
-<script lang="ts" setup>
+<script setup>
 import {useProductStore} from "@/store/index.js";
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const { all: allProduct, data } = useProductStore();
 
@@ -10,12 +12,20 @@ const fetchProductData = async () => {
 onMounted(() => {
   fetchProductData();
 });
+const navigateTo = (page) => {
+  if (page === 'login') {
+    router.push({ name: 'login' });
+  } else if (page === 'register') {
+    router.push({ name: 'register' });
+  }
+};
+
 </script>
 
 <template>
   <div class="container">
     <i class="speediz-image speediz-image-logo" />
-    <i class="speediz-image speediz-image-BackgroundSplash" />
+    <i class="speediz-image speediz-image-background-splash" />
     <div class="content">
       <h1>Ship your parcel <br>with Shipping Now</h1>
       <span>Lorem ipsum dolor sit amet.
@@ -23,8 +33,8 @@ onMounted(() => {
         Lorem ipsum dolor sit amet.</span>
     </div>
     <div class="button-container d-flex gap-2 position-relative  ms-4 mt-5 ">
-      <el-button class="button" round>Login</el-button>
-      <el-button class="button" round>Sign Up</el-button>
+      <el-button class="button" @click="navigateTo('login')" round>Login</el-button>
+      <el-button class="button" @click="navigateTo('register')" round>Sign Up</el-button>
 
       <el-button class="button" round>Logout</el-button>
 
@@ -35,6 +45,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .container {
+  animation: content-fade-in 0.6s ease-out forwards;
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -47,6 +58,7 @@ onMounted(() => {
     left: 100px;
     top: 300px;
     color: white;
+    width: 500px;
   }
   .content h1{
     display: block;
@@ -66,8 +78,10 @@ onMounted(() => {
     z-index: 4;
     left: 100px;
     top: 250px;
+    width: 500px;
+
     .button{
-      background-color: #FFBD59;
+      background-color: $primary-color;
       border: none;
       color: white;
       width: 158px;
@@ -75,11 +89,13 @@ onMounted(() => {
       font-family: Inter, sans-serif;
     }
     .button:hover{
-      background-color: darkgray;
+      color: #A9A9A9;
+
     }
 
 
   }
 }
+
 </style>
 
