@@ -25,7 +25,7 @@ const navigateTo = (page) => {
 <template>
   <div class="container">
     <i class="speediz-image speediz-image-logo" />
-    <i class="speediz-image speediz-image-BackgroundSplash" />
+    <i class="speediz-image speediz-image-background-splash" />
     <div class="content">
       <h1>Ship your parcel <br>with Shipping Now</h1>
       <span>Lorem ipsum dolor sit amet.

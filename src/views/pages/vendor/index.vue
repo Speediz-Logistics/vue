@@ -1,9 +1,10 @@
 <template>
   <div>
     <SplashScreen v-if="showSplashScreen" />
-    <router-view v-else />
-
-
+    <div v-else>
+      <router-view v-if="login" />
+      <on-board-screen v-else/>
+    </div>
   </div>
 </template>
 
@@ -11,9 +12,10 @@
 import { ref, onMounted } from 'vue';
 import useCookies from '@/composables/useCookie.js';
 import SplashScreen from '@/views/pages/vendor/screens/SplashScreen.vue';
+import OnBoardScreen from "@/views/pages/vendor/screens/OnBoardScreen.vue";
 const { getCookie, setCookie } = useCookies();
 const showSplashScreen = ref(true);
-
+const login = ref(true);
 
 onMounted(() => {
   const splashScreenCookie = getCookie('splashScreenShown');

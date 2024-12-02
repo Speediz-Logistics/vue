@@ -1,5 +1,6 @@
 .#{$prefix}-wrapper {
-  position: absolute;
+  //position: absolute;
+  height: 100vh;
   animation: fadeIn 1000ms ease;
   -webkit-animation: fadeIn 1000ms ease;
 }
