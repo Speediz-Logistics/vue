@@ -1,17 +1,7 @@
 <script setup>
-import {useProductStore} from "@/store/index.js";
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const { all: allProduct, data } = useProductStore();
-
-const fetchProductData = async () => {
-  await allProduct();
-};
-
-onMounted(() => {
-  fetchProductData();
-});
 const navigateTo = (page) => {
   if (page === 'login') {
     router.push({ name: 'login' });

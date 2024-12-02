@@ -17,7 +17,7 @@
             </a>
           </li>
           <li>
-            <a>
+            <a @click="logout">
               <img src="@/assets/icon/profile.svg" alt="profile icon" class="profile">
             </a>
           </li>
@@ -45,7 +45,7 @@
       </a>
       <p> Packages <br></br>Tracking</p>
     </div>
-    <div  class="content-3">
+    <div class="content-3">
       <a>
         <img src="@/assets/icon/content3.svg" alt="icon content1">
       </a>
@@ -56,6 +56,17 @@
 </template>
 
 <script setup>
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {useAuthStore} from "@/store/auth.js";
+
+const router = useRouter()
+const authStore = useAuthStore();
+
+const logout = () => {
+  authStore.logout()
+  router.push({name: 'login'})
+}
 </script>
 
 <style scoped lang="scss">
@@ -68,7 +79,7 @@
   position: absolute;
   display: flex;
   justify-content: left;
-  align-items: center ;
+  align-items: center;
   animation: content-fade-in 0.6s ease-out forwards;
 }
 
@@ -108,13 +119,15 @@
   border: none;
   border-radius: 10px;
 }
-.navbar-nav .notification{
+
+.navbar-nav .notification {
   margin-left: 150px;
   height: 40px;
   width: 40px;
   align-items: center;
 
 }
+
 .navbar-nav .profile {
   height: 40px;
   width: 40px;
@@ -123,17 +136,18 @@
 }
 
 .hero-content img {
-    max-width: 100%;
-    height: 30%;
-  }
+  max-width: 100%;
+  height: 30%;
+}
 
-h1{
+h1 {
   padding-bottom: 40px;
   font-size: 2em;
   font-weight: bold;
   font-family: Inter, sans-serif;
   animation: content-fade-in 0.6s ease-out forwards;
 }
+
 .content {
   display: flex;
   flex-direction: row;
@@ -172,6 +186,7 @@ h1{
     text-align: center;
   }
 }
+
 .content-1 p,
 .content-2 p,
 .content-3 p {
