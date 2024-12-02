@@ -53,6 +53,7 @@ import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { Message, Key } from '@element-plus/icons-vue';
 import useNavigate from '@/composables/useNavigate.js';
+import { useAuthStore } from '@/store/auth'; // Import the auth store
 
 const { navigateTo } = useNavigate();
 
@@ -74,22 +75,38 @@ const rules = {
   ],
   password: [
     { required: true, message: 'Please enter password', trigger: 'blur' },
-    { type: 'password', message: 'Please input password', trigger: ['blur', 'change'] },
+    { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
   ],
 };
 
 // Reference for form validation
 const formRef = ref(null);
 
-// Handle login function
-const handleLogin = () => {
-  formRef.value.validate((valid) => {
+// Use the Auth Store
+const authStore = useAuthStore();
+
+// Handle login action
+const handleLogin = async () => {
+  formRef.value.validate(async (valid) => {
     if (valid) {
-      ElMessage.success('Login successful');
-      router.push({ name: 'onboard-Screen' });
+      try {
+        // Attempt to log in using the auth store
+        await authStore.login({
+          email: dynamicValidateForm.email,
+          password: dynamicValidateForm.password,
+        });
+
+        // Show success message
+        ElMessage.success('Login successful!');
+
+        // Redirect to the dashboard page after login
+        router.push({ name: 'onboard-Screen' }); // Change 'dashboard' to your actual dashboard route name
+      } catch (error) {
+        // Show error message on login failure
+        ElMessage.error(error.response?.data?.message || 'Login failed. Please try again.');
+      }
     } else {
       ElMessage.error('Please fill in the form correctly');
-      return false;
     }
   });
 };
