@@ -1,6 +1,6 @@
 import { useCookies } from 'vue3-cookies';
 
-export default function auth({ to, next }) {
+export default function authenticated({ to, next }) {
   const { cookies } = useCookies();
   const token = cookies.get('token');
   const tokenType = cookies.get('tokenType');

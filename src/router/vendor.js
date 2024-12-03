@@ -22,7 +22,6 @@ export default [
         path: 'register',
         name: 'register',
         component: () => import('@/views/pages/vendor/screens/RegisterScreen.vue'),
-        meta: { middlewares: [authenticated] },
       },
       {
         path:'onboard-screen',
