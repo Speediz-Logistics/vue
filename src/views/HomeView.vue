@@ -5,10 +5,10 @@ import HomeIndex from '@/views/pages/home/index.vue';
 // Set meta tags for SEO
 useMetaTag({
   title: 'Speediz',
-  name: 'Speediz | Coming Soon',
-  description: 'Coming Soon.',
+  name: 'Speediz | Vendor',
+  description: 'Vendor page',
   url: 'https://ite-alumni-dev.decapsoul.one/',
-  image: 'https://mekmunsopheaktra.com/assets/images/logo.png',
+  image: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png',
   type: 'article',
   siteName: 'Coming Soon',
   locale: 'en_US',

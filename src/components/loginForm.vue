@@ -95,10 +95,6 @@ const handleLogin = async () => {
           email: dynamicValidateForm.email,
           password: dynamicValidateForm.password,
         });
-
-        // Show success message
-        ElMessage.success('Login successful!');
-
         // Redirect to the dashboard page after login
         router.push({ name: 'onboard-Screen' }); // Change 'dashboard' to your actual dashboard route name
       } catch (error) {
