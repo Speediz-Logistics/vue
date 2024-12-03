@@ -10,7 +10,6 @@ export default function requiredAuth({ next, router }) {
     // Allow navigation to the route
     return next();
   }
-
   // Redirect to login page
-  return next({ name: 'login' });
+ return next({ name: 'login' });
 }
