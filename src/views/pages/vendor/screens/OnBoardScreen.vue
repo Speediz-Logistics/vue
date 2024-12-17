@@ -26,6 +26,7 @@
     </nav>
   </header>
 
+
   <div class="content-fade-in">
     <img src="@/assets/images/heroContent.png" alt="hero-content">
   </div>
@@ -33,24 +34,24 @@
     <h1>Explore your service</h1>
   </div>
   <div class="content">
-    <div class="content-1">
+    <button class="content-1" @click="packageManagement({ name: 'package-management' })">
       <a>
         <img src="@/assets/icon/content1.svg" alt="icon content1">
       </a>
-      <p> Packages<br></br>Management</p>
-    </div>
-    <div class="content-2">
+      <p> Packages<br>Management</p>
+    </button>
+    <button class="content-2">
       <a>
         <img src="@/assets/icon/content2.svg" alt="icon content1">
       </a>
-      <p> Packages <br></br>Tracking</p>
-    </div>
-    <div class="content-3">
+      <p> Packages <br>Tracking</p>
+    </button>
+    <button class="content-3">
       <a>
         <img src="@/assets/icon/content3.svg" alt="icon content1">
       </a>
       <p> Packages <br></br>Invoices</p>
-    </div>
+    </button>
   </div>
 
 </template>
@@ -59,6 +60,7 @@
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {useAuthStore} from "@/store/auth.js";
+import {usePackageStore} from "@/store/package.js";
 
 const router = useRouter()
 const authStore = useAuthStore();
@@ -66,6 +68,10 @@ const authStore = useAuthStore();
 const logout = () => {
   authStore.logout()
   router.push({name: 'login'})
+}
+const packageManagement = () => {
+  router.push({name:'package-management'});
+
 }
 </script>
 
@@ -158,6 +164,7 @@ h1 {
   .content-1,
   .content-2,
   .content-3 {
+    border: none;
     background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;

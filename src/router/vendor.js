@@ -33,6 +33,16 @@ export default [
         path: 'forgot-password',
         name: 'forgot-password',
         component: () => import('@/views/pages/vendor/screens/ForgetPassword.vue')
+      },
+      {
+        path: 'package-management',
+        name: 'package-management',
+        component: () => import('@/views/pages/vendor/screens/packageManagement.vue')
+      },
+      {
+        path: 'package-management/package-detail/:id',
+        name: 'detail',
+        component: () => import('@/views/pages/vendor/screens/PackageDetail/[id].vue')
       }
     ],
   },
