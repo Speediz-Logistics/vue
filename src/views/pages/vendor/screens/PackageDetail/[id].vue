@@ -11,30 +11,27 @@ const route = useRoute();
    router.push({name: "package-management"});
  }
 
- const packageStore = usePackageStore();
- const packageDetail = ref({});
-const fetchPackageDetail = async () => {
-  packageStore.showPackageDetail = async function (id) {
-    
-  };
-  try{
-    const id = route.params.id;
-    console.log(id);
-    await packageStore.showPackageDetail(id);
+const packageStore = usePackageStore();
+const packageDetail = ref({});
+const fetchPackageDetail = async (id) => {
+  try {
+    await packageStore.show(id);
     packageDetail.value = packageStore.packageDetail;
     console.log(packageDetail);
-  }catch (error) { console.error('Error fetching package detail:', error); }
-}
+  } catch (error) {
+    console.error('Error fetching package detail:', error);
+  }
+};
 
- onMounted(() => {
-
-   fetchPackageDetail();
- })
+onMounted(() => {
+  const id = route.params.id;
+  fetchPackageDetail(id);
+});
 </script>
 
 <template>
   <div class="page d-flex">
-    <div class="side-bar vh-100">
+    <div class="side-bar ">
       <h1>Package Detail</h1>
       <button @click="backTo({name:'package-management'})">
         <font-awesome-icon :icon="['fas', 'arrow-left']"/>
@@ -118,6 +115,7 @@ const fetchPackageDetail = async () => {
 .side-bar{
   background-color: #FFBD59;
   width: 400px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
