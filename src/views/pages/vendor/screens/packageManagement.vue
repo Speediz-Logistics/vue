@@ -14,12 +14,13 @@ const backhome = () => {
 }
 
 
-const selectValue = ref('')
+//const selectValue = ref('')
+const searchQuery = ref('');
 const dateValue = ref([])
 const start_date = ref('');
 const end_date = ref('');
 const tableData = ref([]);
-const searchQuery = ref('');
+
 
 
 const locationOptions = ref([
@@ -82,7 +83,7 @@ onMounted(() => {
 
 <template>
   <div class="page d-flex">
-      <div class="side-bar vh-100">
+      <div class="side-bar ">
         <h1>Package Management</h1>
         <button @click="backhome({name:'onboard-Screen'})">
           <font-awesome-icon :icon="['fas', 'arrow-left']"/>

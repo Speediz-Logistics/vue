@@ -7,7 +7,7 @@ export const usePackageStore = defineStore('package', () => {
   const total = ref(0);
   const currentPage = ref(1);
   const pageSize = ref(15);
-  const packageDetail = ref(null);
+  const packageDetail = ref([]);
 
   const all = async (params) => {
     const response = await PackageService.index(params);
@@ -17,16 +17,17 @@ export const usePackageStore = defineStore('package', () => {
     return response;
   };
 
-  const showProductDetail = async (id) => {
-      const response = await PackageService.showPackageDetail(id);
-      packageDetail.value = response.data;
+  const show = async (id) => {
+      const response = await PackageService.show(id);
+      packageDetail.value = response?.data;
       packageDetail.value = response || {};
+      return response;
   };
 
 
   return {
     all,
-    showProductDetail,
+    show,
     data: computed(() => data.value),
     total: computed(() => total.value),
     currentPage: computed(() => currentPage.value),

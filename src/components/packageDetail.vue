@@ -1,103 +1,95 @@
+
 <script setup>
-import { defineProps } from "vue";
-
-const props = defineProps({
-  packageDetail: {
-    id : 'id',
-    customer_name : 'customer_name',
-    customer_phone : ' customer_phone',
-    location : 'location',
-    total_price : 'total_price',
+import { defineProps } from 'vue';
+defineProps({
+  packageDetail:{
+    type: Object,
+    required: true
   }
-})
 
+});
 </script>
 
 <template>
-<div class="package-detail text-start" v-if="props.packageDetail">
- <div class="d-flex  justify-content-between mb-lg-5 text-start">
-   <ul>
-     <li class="fw-bold">
-       <Strong>Package's Detail: </Strong>
-     </li>
-     <li>
-       Package ID: {{packageDetail.id }}
-     </li>
-     <li>
-       Customer Name: {{packageDetail.package.customer_name }}
-     </li>
-     <li>
-       Phone Number: {{packageDetail.package.customer_phone}}
-     </li>
-     <li>
-       Location: {{packageDetail.package.location}}
-     </li>
-     <li>
-       Total price: {{packageDetail.package.total_price}}
-     </li>
-   </ul>
-    <ul>
-      <li class="fw-bold">
-        <Strong>Pickup's Information: </Strong>
-      </li>
-      <li>
-        Pickup Date: {{packageDetail.vendor.pickup_date}}
-      </li>
-      <li>
-        Pickup By: {{packageDetail.delivery.vendor_name}}
-      </li>
-    </ul>
-  </div>
-  <div class="d-flex  justify-content-between text-start">
-    <ul>
-      <li class="fw-bold">
-        <Strong>Delivery Detail: </Strong>
-      </li>
-      <li>
-        Deliver Name: {{packageDetail.delivery.driver_name}}
-      </li>
-      <li>
-        Deliver Contact: {{packageDetail.delivery.driver_phone}}
-      </li>
-      <li>
-        Telegram contact: {{telegramContact}}
-      </li>
-      <li>
-        Delivery Date: {{packageDetail.delivery.shipment_date}}
-      </li>
-      <li>
-        Delivery Fee: {{packageDetail.delivery.delivery_fee}}
-      </li>
-    </ul>
 
-    <ul>
-      <li class="fw-bold">
-        Packaga's image: {{image}}
-      </li>
-    </ul>
-  </div>
-  <div class="mt-lg-5 text-start">
-    <ul>
-      <li class="fw-bold">
-        Package Status: {{packageStatus}}
-      </li>
-      <li class="fw-bold">
-        Package Payment: {{packagePayment}}
-      </li>
-    </ul>
-  </div>
-</div>
-  <div v-else class="flex justify-content-between mb-lg-5 align-items-center">
-    <p>Loading package details...</p>
-  </div>
+    <div class="package-detail-page text-start" v-if="packageDetail.data">
+      <table class="d-flex justify-content-between ">
+        <tbody class="d-flex flex-row col-span-2">
+        <tr class="package-detail d-flex flex-column">
+          <th colspan="2" class="fw-bold text-spacing">Package's Detail</th>
+          <td>Package ID: {{ packageDetail.data?.id }}</td>
+          <td>Customer Name: {{ packageDetail.data?.package?.customer_name }} </td>
+          <td>Location: {{ packageDetail.data?.package?.location }}</td>
+          <td>Total Price: {{ packageDetail.data?.package?.total_price }}</td>
+        </tr>
+
+        <tr class="pickup-info d-flex flex-column">
+          <th colspan="2" class="fw-bold text-spacing">Pickup's Information</th>
+          <td>Pickup Date: {{ packageDetail.data?.vendor?.pickup_date }}</td>
+          <td>Pickup By: {{ packageDetail.data?.vendor?.vendor_name }}</td>
+          <td>Location Pickup: {{ packageDetail.data?.vendor?.vendor_address }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div>
+        <table >
+          <tbody class="d-flex flex-row justify-content-between">
+          <tr class="delivery-detail d-flex flex-column">
+            <td colspan="2" class="fw-bold text-spacing">Delivery Detail</td>
+            <td>Deliver Name: {{ packageDetail.data?.delivery?.driver_name }}</td>
+            <td>Deliver Contact: {{ packageDetail.data?.delivery?.driver_phone }}</td>
+            <td>Delivery Date: {{ packageDetail.data?.delivery?.shipment_date }}</td>
+            <td>Delivery Fee: {{ packageDetail.data?.delivery?.delivery_fee }}</td>
+          </tr>
+
+          <tr class="package-image d-flex flex-column ">
+            <td colspan="2" class="fw-bold  text-spacing">Package's Image</td>
+            <td colspan="2" class="image">
+              <img :src="packageDetail.data?.image" alt="Package Image" class="img-fluid" />
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <table >
+          <tbody class="d-flex flex-row justify-content-between">
+          <tr class="delivery-detail d-flex flex-column text-spacing">
+            <td>Package Status: {{ packageDetail.data?.delivery?.package_status }}</td>
+            <td>Package's Payment: {{ packageDetail.data?.package?.total_price }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </template>
 
 <style scoped lang="scss">
-.package-detail{
+.package-detail-page {
   width: 1354px;
   height: 700px;
   background-color: #ffffff;
   margin-left: 50px;
   padding: 50px;
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  border-radius: 20px;
+  box-shadow: 1px 1px 3px gray;
+
+}
+.image{
+  width: 200px;
+  height: 200px;
+}
+
+.package-detail,
+.package-image,
+.delivery-detail,
+.pickup-info{
+  width: 800px;
+  height: 200px;
+}
+.text-spacing {
+  margin-bottom: 10px; /* Adds 10px space below each text element */
 }
 </style>
