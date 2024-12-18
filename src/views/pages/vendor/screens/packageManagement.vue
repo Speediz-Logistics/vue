@@ -5,6 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {useRouter} from 'vue-router';
 import {useAuthStore} from "@/store/auth.js";
 import { usePackageStore} from "@/store/package.js";
+import {useDebounce} from "@/composables/useDebounce.js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -13,7 +14,7 @@ const backhome = () => {
   router.push({name: 'onboard-Screen'})
 }
 
-
+const { debounce } = useDebounce();
 //const selectValue = ref('')
 const searchQuery = ref('');
 const dateValue = ref([])
@@ -33,7 +34,7 @@ const showPackageData = async () => {
   const params = {
     start_date: start_date.value,
     end_date: end_date.value,
-    phone_number: searchQuery.value,
+    search: searchQuery.value,
     page: packageStore.currentPage,
     per_page: packageStore.pageSize,
 
@@ -55,9 +56,10 @@ const handleLocationChange = () => {
   showPackageData();
 }
 // Handle search
-const handleSearch = () => {
+const handleSearch = debounce(() => {
   packageStore.setCurrentPage(1);
-  showPackageData(); }
+  showPackageData();
+}, 300);
 
 
 const handleDateChange = (dates) => {
@@ -100,11 +102,17 @@ onMounted(() => {
                 </a>
               </li>
               <li class="w-100">
-                <input
-                  type="text"
-                  placeholder="Search package by phone number"
-                  class="search"
-                />
+                <el-input
+                  v-model="searchQuery"
+                  placeholder="Search package by package number"
+                  @input="handleSearch"
+                  clearable
+                  class="search-input"
+                >
+                  <template #prefix>
+                    <font-awesome-icon :icon="['fas', 'search']" />
+                  </template>
+                </el-input>
               </li>
               <li class="icon">
                 <a>
