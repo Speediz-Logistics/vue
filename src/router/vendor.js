@@ -43,7 +43,38 @@ export default [
         path: 'package-management/package-detail/:id',
         name: 'detail',
         component: () => import('@/views/pages/vendor/screens/PackageDetail/[id].vue')
-      }
+      },
+      {
+        path: 'package-tracking',
+        name: 'package-tracking',
+        component: () => import('@/views/pages/vendor/screens/Package-tracking.vue')
+      },
+      {
+        path: 'tracking-detail',
+        name: 'tracking-detail',
+        component: () => import('@/views/pages/vendor/screens/Tracking-detail/[id].vue')
+      },
+      {
+        path: 'view-tracking',
+        name: 'view-tracking',
+        component: () => import('@/views/pages/vendor/screens/View-tracking/[id].vue')
+      },
+      {
+        path:'profile',
+        name: 'profile-setting',
+        component: () => import('@/views/pages/vendor/screens/Profile-setting/information/[id].vue')
+      },
+      {
+        path: 'logout',
+        name: 'logout',
+        component: () => import('@/views/pages/vendor/screens/Profile-setting/logout.vue')
+      },
+      {
+        path: 'change-password',
+        name: 'change-password',
+        component: () => import('@/views/pages/vendor/screens/Profile-setting/change-password/index.vue')
+      },
+
     ],
   },
 ];
