@@ -65,16 +65,15 @@ export default [
         component: () => import('@/views/pages/vendor/screens/Profile-setting/information/[id].vue')
       },
       {
-        path: 'logout',
-        name: 'logout',
-        component: () => import('@/views/pages/vendor/screens/Profile-setting/logout.vue')
-      },
-      {
         path: 'change-password',
         name: 'change-password',
         component: () => import('@/views/pages/vendor/screens/Profile-setting/change-password/index.vue')
       },
-
+      {
+        path: 'logout',
+        name: 'logout',
+        component: () => import('@/views/pages/vendor/screens/Profile-setting/Logout.vue')
+      }
     ],
   },
 ];
