@@ -17,7 +17,7 @@
             </a>
           </li>
           <li>
-            <a @click="logout">
+            <a @click="handleSetting">
               <img src="@/assets/icon/profile.svg" alt="profile icon" class="profile">
             </a>
           </li>
@@ -34,13 +34,13 @@
     <h1>Explore your service</h1>
   </div>
   <div class="content">
-    <button class="content-1" @click="packageManagement({ name: 'package-management' })">
+    <button class="content-1" @click="packageManagement()">
       <a>
         <img src="@/assets/icon/content1.svg" alt="icon content1">
       </a>
       <p> Packages<br>Management</p>
     </button>
-    <button class="content-2">
+    <button class="content-2" @click="dailyTracking()">
       <a>
         <img src="@/assets/icon/content2.svg" alt="icon content1">
       </a>
@@ -65,12 +65,15 @@ import {usePackageStore} from "@/store/package.js";
 const router = useRouter()
 const authStore = useAuthStore();
 
-const logout = () => {
-  authStore.logout()
-  router.push({name: 'login'})
+const handleSetting = () => {
+  router.push({name: 'profile-setting'})
 }
 const packageManagement = () => {
   router.push({name:'package-management'});
+
+}
+const dailyTracking = () => {
+  router.push({name:'package-tracking'});
 
 }
 </script>
