@@ -3,7 +3,7 @@
 </script>
 
 <template>
-
+  <div>Logout</div>
 </template>
 
 <style scoped lang="scss">
