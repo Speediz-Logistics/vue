@@ -1,50 +1,47 @@
 <script setup>
-
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {useRouter, useRoute} from "vue-router";
-import PackageDetail from "@/components/packageDetail.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useRouter, useRoute } from "vue-router";
 import { usePackageStore } from "@/store/package.js";
 
 const router = useRouter();
 const route = useRoute();
 const backTo = () => {
-  router.push({name: "package-management"});
-}
+  router.push({ name: "package-tracking" });
+};
 
 const packageStore = usePackageStore();
-const packageDetail = ref({});
+const packageDetail = ref([]);
+const activities = ref([]);
+
+// Fetch package details
 const fetchPackageDetail = async (id) => {
   try {
-    await packageStore.show(id);
-    packageDetail.value = packageStore.packageDetail;
-    console.log(packageDetail);
+    const response = await packageStore.show(id);
+    packageDetail.value = response.data || [];
+    setPackageTimeline(response.data.package.status);  // Set the timeline based on package status
   } catch (error) {
-    console.error('Error fetching package detail:', error);
+    console.error("Error fetching package detail:", error);
   }
 };
 
-//timeline
-const activities = [
-  {
-    content: 'Event start',
-    timestamp: '2018-04-15',
-  },
-  {
-    content: 'Approved',
-    timestamp: '2018-04-13',
-  },
-  {
-    content: 'Success',
-    timestamp: '2018-04-11',
-  },
-]
+// Set the timeline based on the package's status
+const setPackageTimeline = (status) => {
+  activities.value = [
+    { content: 'Pending', type: status === 'pending' ? 'success' : 'info', class: status === 'pending' ? 'active' : '' },
+    { content: 'In-transit', type: status === 'in-transit' ? 'success' : 'info', class: status === 'in-transit' ? 'active' : '' },
+    { content: 'Completed', type: status === 'completed' ? 'success' : 'info', class: status === 'completed' ? 'active' : '' }
+  ];
+};
 
+// Handle package tracking redirection
 const handleTracking = (id) => {
   router.push({
     name: 'view-tracking',
-    params: { id: id }
+    params: { id }
   });
 };
+
+// Initialize on mounted
 onMounted(() => {
   const id = route.params.id;
   fetchPackageDetail(id);
@@ -53,11 +50,11 @@ onMounted(() => {
 
 <template>
   <div class="page d-flex">
-    <div class="side-bar ">
+    <div class="side-bar">
       <h1>Package Detail</h1>
-      <button @click="backTo({name:'package-management'})">
+      <button @click="backTo">
         <font-awesome-icon :icon="['fas', 'arrow-left']"/>
-        Package Management
+        Package Tracking
       </button>
     </div>
 
@@ -70,7 +67,7 @@ onMounted(() => {
             </a>
           </li>
           <li class="w-100">
-            <input type="text" placeholder="Search package by phone number" class="search"  />
+            <input type="text" placeholder="Search package by phone number" class="search" />
           </li>
           <li class="icon">
             <a>
@@ -85,67 +82,69 @@ onMounted(() => {
         </ul>
       </header>
 
-      <!--Package Detail-->
-      <div class="package-detail-page text-start" v-if="packageDetail.data">
-        <table class="d-flex justify-content-between ">
+      <!-- Package Detail -->
+      <div class="package-detail-page text-start" v-if="packageDetail">
+        <table class="d-flex justify-content-between">
           <tbody class="d-flex flex-row col-span-2">
           <tr class="package-detail d-flex flex-column">
             <th colspan="2" class="fw-bold text-spacing">Package's Detail</th>
-            <td>Package ID: {{ packageDetail.data?.id }}</td>
-            <td>Customer Name: {{ packageDetail.data?.package?.customer_name }} </td>
-            <td>Location: {{ packageDetail.data?.package?.location }}</td>
-            <td>Total Price: {{ packageDetail.data?.package?.total_price }}</td>
+            <td>Package number: {{ packageDetail.package?.package_number }}</td>
+            <td>Customer Name: {{ packageDetail.package?.customer_name }} </td>
+            <td>Location: {{ packageDetail.package?.location }}</td>
+            <td>Total Price: {{ packageDetail.package?.total_price}}</td>
           </tr>
 
           <tr class="pickup-info d-flex flex-column">
             <th colspan="2" class="fw-bold text-spacing">Pickup's Information</th>
-            <td>Pickup Date: {{ packageDetail.data?.vendor?.pickup_date }}</td>
-            <td>Pickup By: {{ packageDetail.data?.vendor?.vendor_name }}</td>
-            <td>Location Pickup: {{ packageDetail.data?.vendor?.vendor_address }}</td>
+            <td>Pickup Date: {{ packageDetail.vendor?.pickup_date }}</td>
+            <td>Pickup By: {{ packageDetail.delivery?.driver_name }}</td>
+            <td>Location Pickup: {{ packageDetail.vendor?.vendor_address }}</td>
           </tr>
           </tbody>
         </table>
+
         <div>
-          <table >
+          <table>
             <tbody class="d-flex flex-row justify-content-between">
             <tr class="delivery-detail d-flex flex-column">
               <td colspan="2" class="fw-bold text-spacing">Delivery Detail</td>
-              <td>Deliver Name: {{ packageDetail.data?.delivery?.driver_name }}</td>
-              <td>Deliver Contact: {{ packageDetail.data?.delivery?.driver_phone }}</td>
-              <td>Delivery Date: {{ packageDetail.data?.delivery?.shipment_date }}</td>
-              <td>Delivery Fee: {{ packageDetail.data?.delivery?.delivery_fee }}</td>
+              <td>Deliver Name: {{ packageDetail.delivery?.driver_name }}</td>
+              <td>Deliver Contact: {{ packageDetail.delivery?.driver_phone }}</td>
+              <td>Delivery Date: {{ packageDetail.delivery?.shipment_date }}</td>
+              <td>Delivery Fee: {{ packageDetail.delivery?.delivery_fee }}</td>
             </tr>
 
-            <tr class="package-image d-flex flex-column ">
-              <td colspan="2" class="fw-bold  text-spacing">Package's Image</td>
+            <tr class="package-image d-flex flex-column">
+              <td colspan="2" class="fw-bold text-spacing">Package's Image</td>
               <td colspan="2" class="image">
-                <img :src="packageDetail.data?.image" alt="Package Image" class="img-fluid" />
+                <img :src="packageDetail?.image" alt="Package Image" class="img-fluid" />
               </td>
             </tr>
             </tbody>
           </table>
         </div>
 
-        <table >
+        <table>
           <tbody class="d-flex flex-row justify-content-between">
-          <!--Timeline Package-->
+          <!-- Timeline Package -->
           <tr class="delivery-detail d-flex flex-column">
             <td>Timeline Package:</td>
             <el-timeline class="w-[600px]">
               <el-timeline-item
                 v-for="(activity, index) in activities"
                 :key="index"
-                :timestamp="activity.timestamp"
+                :type="activity.type"
+                :class="activity.class"
               >
                 {{ activity.content }}
               </el-timeline-item>
             </el-timeline>
-            <el-button type="info" class="w-25" @click="handleTracking()">Tracking Detail</el-button>
+            <el-button type="info" class="w-25" @click="handleTracking(packageDetail.package.id)">Tracking Detail</el-button>
           </tr>
 
           <tr class="delivery-detail d-flex flex-column text-spacing">
-            <td>Package Status: {{ packageDetail.data?.delivery?.package_status }}</td>
-            <td>Package's Payment: {{ packageDetail.data?.package?.total_price }}</td>
+            <td>Package Status: {{ packageDetail.delivery?.package_status }}</td>
+            <td>Package's Payment: {{ packageDetail.package?.total_price }}</td>
           </tr>
           </tbody>
         </table>

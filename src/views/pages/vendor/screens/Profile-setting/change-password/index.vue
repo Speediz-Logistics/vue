@@ -4,13 +4,14 @@
     <el-form
       ref="formRef"
       :model="resetForm"
+      :rules="rules"
       label-width="auto"
       class="demo-dynamic gap-4"
     >
       <!-- Old Password Field -->
-      <el-form-item prop="oldPassword" :rules="rules.oldPassword">
+      <el-form-item prop="oldPassword">
         <el-input
-          v-model="resetForm.oldPassword"
+          v-model="resetForm.old_password"
           type="password"
           placeholder="Enter your current password"
           show-password
@@ -20,9 +21,9 @@
       </el-form-item>
 
       <!-- New Password Field -->
-      <el-form-item prop="newPassword" :rules="rules.newPassword">
+      <el-form-item prop="newPassword">
         <el-input
-          v-model="resetForm.newPassword"
+          v-model="resetForm.password"
           type="password"
           placeholder="Enter new password"
           show-password
@@ -32,9 +33,9 @@
       </el-form-item>
 
       <!-- Confirm Password Field -->
-      <el-form-item prop="confirmPassword" :rules="rules.confirmPassword">
+      <el-form-item prop="confirmPassword">
         <el-input
-          v-model="resetForm.confirmPassword"
+          v-model="resetForm.password_confirmation"
           type="password"
           placeholder="Confirm new password"
           show-password
@@ -56,27 +57,29 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Key } from '@element-plus/icons-vue';
-
+import { Key } from '@element-plus/icons-vue';  // Ensure proper icon import
+import { useResetPasswordStore } from "@/store/resetPassword.js";  // Assuming store exists
+import {useRouter} from 'vue-router';
 const formRef = ref(null);
-
+const resetStore = useResetPasswordStore();  // Assuming this store will handle API calls or state management
+const router = useRouter();
 // Reset password form data
 const resetForm = reactive({
-  oldPassword: '',
-  newPassword: '',
-  confirmPassword: '',
+  old_password: '',
+  password: '',
+  password_confirmation: '',
 });
 
 // Form validation rules
 const rules = {
-  oldPassword: [
+  old_password: [
     { required: true, message: 'Please enter your current password', trigger: 'blur' },
   ],
-  newPassword: [
+  password: [
     { required: true, message: 'Please enter your new password', trigger: 'blur' },
     { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
   ],
-  confirmPassword: [
+  password_confirmation: [
     {
       required: true,
       message: 'Please confirm your new password',
@@ -84,7 +87,7 @@ const rules = {
     },
     {
       validator: (rule, value, callback) => {
-        if (value !== resetForm.newPassword) {
+        if (value !== resetForm.password) {
           callback(new Error("Passwords don't match"));
         } else {
           callback();
@@ -95,17 +98,26 @@ const rules = {
   ],
 };
 
-// Reset password handler
-const handleResetPassword = () => {
-  formRef.value.validate((valid) => {
-    if (valid) {
+const handleResetPassword = async () => {
+  try {
+    // Validate the form
+    const isValid = await formRef.value.validate();
+
+    if (isValid) {
+      // Call the reset password logic (API call)
+      await resetStore.resetPassword(resetForm);
       ElMessage.success('Password reset successfully!');
-      // Implement password reset logic here, e.g., call an API
+      // Navigate to profile settings upon success
+      router.push({ name: 'profile-setting' });
     } else {
-      ElMessage.error('Please fill in the form correctly');
+      ElMessage.error('Please fill in the form correctly.');
     }
-  });
+  } catch (error) {
+    // Handle API or validation errors
+    alert('Failed to reset password. Please try again.');
+  }
 };
+
 </script>
 
 <style scoped>
