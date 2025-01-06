@@ -18,7 +18,7 @@ const handleLogout = () => {
   <div class="d-flex align-items-center justify-content-center align-content-between">
     <div class="logout-container">
       <p>Are you sure to logout?</p>
-      <img src="@/assets/images/logout.png">
+      <i class="speediz-image speediz-image-logo" />
       <div class="button gap-3 d-flex ">
         <button @click="backTo">Cancel</button>
         <button @click="handleLogout">Sure!!</button>
