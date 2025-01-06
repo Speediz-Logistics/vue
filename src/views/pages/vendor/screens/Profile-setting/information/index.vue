@@ -3,13 +3,13 @@ import { useRouter } from 'vue-router';
 import { reactive, ref, onMounted } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useProfileStore } from '@/store/profile.js';
-import { ElMessage } from 'element-plus'; // Import ElMessage for success/error messages
+import { ElMessage } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue';
 
-// Router instance
 const router = useRouter();
-
-// Accessing profile store
 const profileStore = useProfileStore();
+
+// Reactive form data
 const form = reactive({
   first_name: '',
   last_name: '',
@@ -19,30 +19,24 @@ const form = reactive({
   gender: '',
   address: '',
   contact_number: '',
-  image: null,
+  image: null, // To hold the selected file
   full_name: '',
-  image_url: '', // Image URL to display the profile picture
+  image_url: '', // Display the avatar image
 });
 
-// To toggle between edit and view modes
+// Track edit mode
 const isEditing = ref(false);
 
-// Fetch profile details on mount
+// Fetch profile details
 const fetchProfileDetail = async () => {
-  const response = await profileStore.profile(form); // Fetch profile data
-  const profile = response?.data || {};
-  form.first_name = profile.first_name || '';
-  form.last_name = profile.last_name || '';
-  form.business_name = profile.business_name || '';
-  form.email = profile.email || '';
-  form.dob = profile.dob || '';
-  form.gender = profile.gender || '';
-  form.address = profile.address || '';
-  form.contact_number = profile.contact_number || '';
-  form.full_name = profile.full_name || '';
-
-  // Set the image URL properly (assuming profile has a field 'image_url')
-  form.image_url = profile.image || '';
+  try {
+    const response = await profileStore.profile();
+    const profile = response?.data || {};
+    Object.assign(form, profile);
+    form.image_url = profile.image || '';
+  } catch (error) {
+    console.error('Failed to fetch profile details:', error);
+  }
 };
 
 // Toggle between edit and view modes
@@ -50,11 +44,20 @@ const toggleEdit = () => {
   isEditing.value = !isEditing.value;
 };
 
+// Handle avatar upload
+const handleAvatarChange = (file) => {
+  form.image = file; // Set the selected file to form.image
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    form.image_url = e.target.result; // Preview the uploaded image
+  };
+  reader.readAsDataURL(file);
+};
+
+// Save profile changes
 const saveProfile = async () => {
   try {
     const formData = new FormData();
-
-    // Append text fields to FormData
     formData.append('first_name', form.first_name);
     formData.append('last_name', form.last_name);
     formData.append('business_name', form.business_name);
@@ -65,25 +68,20 @@ const saveProfile = async () => {
     formData.append('contact_number', form.contact_number);
     formData.append('full_name', form.full_name);
 
-    // Append image if available
+    // Append image if updated
     if (form.image) {
-      formData.append('image', form.image); // Append the image file (make sure it's a file)
+      formData.append('image', form.image);
     }
 
-    // Send FormData to the updateProfile method
-    const response = await profileStore.updateProfile(formData);
+    await profileStore.updateProfile(formData);
     ElMessage.success('Profile updated successfully!');
-    fetchProfileDetail(); // Refresh the profile after saving
-    isEditing.value = false; // Switch back to view mode
-    return response.data;
+    fetchProfileDetail(); // Refresh data
+    isEditing.value = false; // Exit edit mode
   } catch (error) {
     console.error('Error updating profile:', error);
     ElMessage.error('Failed to update profile. Please try again.');
   }
 };
-
-// Call fetchProfileDetail on component mount
-onMounted(fetchProfileDetail);
 
 // Logout handler
 const handleLogout = () => {
@@ -95,22 +93,23 @@ const backTo = () => {
   router.push({ name: 'onboard-Screen' });
 };
 
-// Change password handler
+// Password change handler
 const changePassword = () => {
   router.push({ name: 'change-password' });
 };
 
-// Handle the upload success
-const handleUploadSuccess = (response, file, fileList) => {
-  form.image = file.raw; // Store the file in the form (use file.raw to access the file object directly)
-  form.image_url = URL.createObjectURL(file.raw); // Create a URL to display the image
+const handleUpload = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    handleAvatarChange(file);
+  };
+  input.click();
 };
 
-// Handle the removal of an image
-const handleRemove = (file, fileList) => {
-  form.image = null; // Reset the image when removed
-  form.image_url = ''; // Clear the image URL
-};
+onMounted(fetchProfileDetail);
 </script>
 
 <template>
@@ -129,21 +128,17 @@ const handleRemove = (file, fileList) => {
       <div class="d-flex flex-column gap-3">
         <!-- Profile Picture -->
         <div class="profile">
-          <el-form-item required prop="image" class="rounded">
-            <el-upload
-              v-model="form.image"
-              list-type="picture-card"
-              :on-success="handleUploadSuccess"
-              :on-remove="handleRemove"
-              :file-list="form.image ? [form.image] : []"
-              :limit="1"
-              accept=".jpeg, .png, .jpg"
-              :auto-upload="false"
-            >
-              <i class="el-icon-plus"></i>
-            </el-upload>
-          </el-form-item>
-          <p class="justify-content-between text-center">{{ form.full_name }}</p>
+
+          <img
+            v-if="form.image_url"
+            :src="form.image_url"
+            alt="Avatar"
+            class="avatar w-50 h-50"
+          />
+          <div class="mb-4 mt-1" v-if="isEditing">
+            <el-button type="primary" size="mini" @click="handleUpload">Select Image</el-button>
+          </div>
+          <p class="text-center">{{ form.full_name }}</p>
         </div>
 
         <!-- Information Section -->
