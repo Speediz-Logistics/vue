@@ -4,12 +4,12 @@ import packageTable from '@/components/packageTable.vue'
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {useRouter} from 'vue-router';
 import {useAuthStore} from "@/store/auth.js";
-import { usePackageStore} from "@/store/package.js";
+import { usePackageHistoryStore} from "@/store/packageHistory.js";
 import {useDebounce} from "@/composables/useDebounce.js";
 
 const authStore = useAuthStore();
 const router = useRouter();
-const packageStore = usePackageStore();
+const packageStore = usePackageHistoryStore();
 const backhome = () => {
   router.push({name: 'onboard-Screen'})
 }

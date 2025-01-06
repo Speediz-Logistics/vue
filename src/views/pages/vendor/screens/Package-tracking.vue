@@ -15,20 +15,12 @@ const backhome = () => {
 }
 
 const { debounce } = useDebounce();
-//const selectValue = ref('')
 const searchQuery = ref('');
-const dateValue = ref([])
 const start_date = ref('');
 const end_date = ref('');
 const tableData = ref([]);
 
 
-
-const locationOptions = ref([
-  { label: 'All Locations', value: '' },
-  { label: 'Toul Kork', value: 'Toul kork' },
-  { label: 'Koh pich', value: 'Koh Pich, Phnom Penh' },
-]);
 
 const showPackageData = async () => {
   const params = {
@@ -51,25 +43,12 @@ const showPackageData = async () => {
   }
 }
 
-const handleLocationChange = () => {
-  packageStore.setCurrentPage(1); // Reset to first page when location changes
-  showPackageData();
-}
+
 // Handle search
 const handleSearch = debounce(() => {
   packageStore.setCurrentPage(1);
   showPackageData();
 }, 300);
-
-
-const handleDateChange = (dates) => {
-  if ( dates && dates.length > 0 ) {
-    start_date.value = dates[0];
-    end_date.value = dates[dates.length - 1];
-    packageStore.setCurrentPage(1);
-    showPackageData();
-  }
-}
 
 const handlePageChange = (page) => {
   packageStore.setCurrentPage(page);

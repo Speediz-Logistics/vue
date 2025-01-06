@@ -50,7 +50,7 @@ export default [
         component: () => import('@/views/pages/vendor/screens/Package-tracking.vue')
       },
       {
-        path: 'tracking-detail',
+        path: 'tracking-detail/:id',
         name: 'tracking-detail',
         component: () => import('@/views/pages/vendor/screens/Tracking-detail/[id].vue')
       },
@@ -62,7 +62,7 @@ export default [
       {
         path:'profile',
         name: 'profile-setting',
-        component: () => import('@/views/pages/vendor/screens/Profile-setting/information/[id].vue')
+        component: () => import('@/views/pages/vendor/screens/Profile-setting/information/index.vue')
       },
       {
         path: 'change-password',
